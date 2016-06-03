@@ -12,7 +12,7 @@ modification, are permitted provided that the following conditions are met:
   this list of conditions and the following disclaimer in the documentation
   and/or other materials provided with the distribution.
 
-* Neither the name of FreeBSD-SMIT nor the names of its
+* Neither the name of Open-SMIT nor the names of its
   contributors may be used to endorse or promote products derived from
   this software without specific prior written permission.
 
@@ -28,7 +28,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---------------------------------------------------------------------------------------
 
-Description: FreeBSD-SMIT Loader
+Description: SMIT Loader
 
 This all provide arguments to be passed to SMIT so it loads the relevent parts
 of the program.
@@ -40,7 +40,12 @@ of the program.
 
 #include <stdio.h>  // Standard IO;
 #include <stdlib.h> // standard lib
+
+
 #include <ncurses.h> // Ncurses header
+//#include <ncurses/ncurses.h> // Alternative Locations on Solaris and etc
+
+
 #include <unistd.h>  // Unistd header
 #include <string.h>  // String header
 
@@ -135,7 +140,6 @@ int main(int argc, char *argv[])
 		init_curses();
 		
 		draw_menu_screen("main");
-		//getch();
 		
 		clean_exits();
 	}
@@ -145,8 +149,3 @@ int main(int argc, char *argv[])
 	return 0;
 }
 		
-		
-	
-	
-	
-

@@ -39,13 +39,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>  // String header
 
 #include "../include/menu.h" // Menu.h 
+#include "../shared/shared.h"
 
 /* This draws a box on stdscr */
-extern int x, y;
+int x, y;
+
+WINDOW *SPAREWIN;
 
 void draw_screen_outline()
 {
-	int x, y;
+//	int x, y;
     clear();
     getmaxyx(stdscr, x,y);
     box(stdscr, ACS_VLINE, ACS_HLINE);
@@ -54,3 +57,34 @@ void draw_screen_outline()
 }
 
 
+void draw_mgrtui()
+{
+    int sy, sx;
+    draw_screen_outline();
+    place_function_keys();
+    
+    mvprintw(1, 2, "Press 'q' to quit");
+    mvhline(3,1, ACS_HLINE, y-3);
+    mvvline(1, y-23, ACS_VLINE, 2);
+    
+    
+    SPAREWIN = newwin(x-12, y-4, 6, 2);
+    getmaxyx(SPAREWIN, sy, sx);
+    box(SPAREWIN, ACS_VLINE, ACS_HLINE);
+    wrefresh(SPAREWIN);
+    refresh();
+
+}
+
+void place_function_keys()
+{
+    int x,y; 
+    getmaxyx(stdscr, y, x);
+    
+    attron(A_BOLD);
+    mvaddstr(y-4, 2, FKEY1);
+    mvaddstr(y-3, 2, FKEY2);
+    attroff(A_BOLD);
+
+
+}

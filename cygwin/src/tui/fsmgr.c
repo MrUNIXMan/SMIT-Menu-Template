@@ -26,65 +26,61 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---------------------------------------------------------------------------------------- */
+---------------------------------------------------------------------------------------
+
+Description: Fsmgr
+
+Filesystem Manager
+
+----------------------------------------------------------------------------------------
+*/
+
+/* Default headers for SMIT  on all systems*/
+
 #include <stdio.h>  // Standard IO;
 #include <stdlib.h> // standard lib
 
-#include <ncurses/ncurses.h> // Alternative Solaris Header
-//#include <ncurses.h> // Ncurses header
-
-
+#include <ncurses.h> // Ncurses header
+//#include <ncurses/ncurses.h> // alternative location
 
 #include <unistd.h>  // Unistd header
 #include <string.h>  // String header
 
-#include "../include/menu.h" // Menu.h 
-#include "../shared/shared.h"
+/* Custom Headers for SMIT */
 
-/* This draws a box on stdscr */
-int x, y;
+#include "../include/smit.h"   // SMIT.h header
+#include "../include/menu.h"	// Menu Specific header
+#include "../shared/shared.h"   // Shared Functions
 
-WINDOW *SPAREWIN;
 
-void draw_screen_outline()
+int filesystem_manager_main()
 {
-//	int x, y;
-    clear();
-    getmaxyx(stdscr, x,y);
-    box(stdscr, ACS_VLINE, ACS_HLINE);
-    refresh();
 
-}
-
-
-void draw_mgrtui()
-{
-    int sy, sx;
-    draw_screen_outline();
-    place_function_keys();
+    int key;
     
-    mvprintw(1, 2, "Press 'q' to quit");
-    mvhline(3,1, ACS_HLINE, y-3);
-    mvvline(1, y-23, ACS_VLINE, 2);
-    
-    
-    SPAREWIN = newwin(x-12, y-4, 6, 2);
-    getmaxyx(SPAREWIN, sy, sx);
-    box(SPAREWIN, ACS_VLINE, ACS_HLINE);
-    wrefresh(SPAREWIN);
-    refresh();
+    while(key !='q')
+    {
 
-}
+	/* See shared.c for the TUI drawing  as it is re-usable code */
+        draw_mgrtui();
+//	int sy;        
 
-void place_function_keys()
-{
-    int x,y; 
-    getmaxyx(stdscr, y, x);
-    
-    attron(A_BOLD);
-    mvaddstr(y-4, 2, FKEY1);
-    mvaddstr(y-3, 2, FKEY2);
-    attroff(A_BOLD);
+        attron(A_BOLD);
+        mvaddstr(1, y-20, "Filesystem Manager");
+        
+        mvaddstr(5, 3, "Filesystem Node");
+        mvaddstr(5, 18+6, "Filesystem Type");
+        mvaddstr(5, 38+6, "Mount Dir");
+
+        mvaddstr(5, 70, "State");
+        
+        
+        
+        key = getch();
+    }
 
 
+
+
+    return 0;
 }

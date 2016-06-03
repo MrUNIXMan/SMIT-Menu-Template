@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef SMIT_H_
 #define SMIT_H_
 
-#define PROGNAME "FreeBSD-SMIT"
+#define PROGNAME "Open-SMIT"
 #define VERSION	 "0.1"
 #define COPYRIGHT "Copyright (C) 2015-2016 by Vincent"
 

@@ -39,7 +39,10 @@ Contains Menus
 
 #include <stdio.h>  // Standard IO;
 #include <stdlib.h> // standard lib
+
 #include <ncurses.h> // Ncurses header
+//#include <ncurses/ncurses.h> // alternative location
+
 #include <unistd.h>  // Unistd header
 #include <string.h>  // String header
 
@@ -47,6 +50,7 @@ Contains Menus
 
 #include "../include/smit.h"   // SMIT.h header
 #include "../include/menu.h"	// Menu Specific header
+#include "../shared/shared.h"
 
 
 /* Main Menu */
@@ -62,7 +66,7 @@ char mainmenuitems[MMAX] [34] = {"System Information",
 								"Network Managment",
 								"Systems Configuration",
 								"Help",
-								"About SMIT",
+								"About OpenSMIT",
 								"Quit"};	
 /* System Information Menu */
 
@@ -91,8 +95,9 @@ void menu_details()
 	box(stdscr, ACS_VLINE, ACS_HLINE);
 	attron(A_BOLD);
 	mvaddstr(3, 2, MnuMesg);
-	mvaddstr(y-4,2, FKEY1); /* Bottom Bar */
-	mvaddstr(y-3,2, FKEY2); /* Bottom Bar */
+	place_function_keys();
+//	mvaddstr(y-4,2, FKEY1); /* Bottom Bar */
+//	mvaddstr(y-3,2, FKEY2); /* Bottom Bar */
 	attroff(A_BOLD);
 	
 }
@@ -222,6 +227,16 @@ void draw_menu_screen(char menutype[])
 				{
 					draw_menu_screen("sysinfo");
 					
+				}
+				
+				if (MMITEMS == 1)
+				{
+				     user_manager_main();
+				}
+				
+				if (MMITEMS == 2)
+				{
+				     filesystem_manager_main();
 				}
 				
 				if(MMITEMS == 5)

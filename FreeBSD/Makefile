@@ -8,12 +8,14 @@ MANSRCDIR = ./man/man1
 MANDESTDIR = /usr/local/man/man1
 SRCDIR = ./src
 
-freebsdsmit:
-	$(CC) -Wall -std=c99 -o smit  -Iinclude -l ncurses \
+cygwinsmit:
+	$(CC)  -std=c99 -o smit  -Iinclude \
 	$(SRCDIR)/smit.c  \
 	$(SRCDIR)/shared/shared.c \
-	$(SRCDIR)/menu/menu.c  
-
+	$(SRCDIR)/menu/menu.c  \
+	$(SRCDIR)/tui/fsmgr.c \
+	$(SRCDIR)/tui/usrmgr.c \
+	-l ncurses
 
 
 

@@ -9,10 +9,12 @@ MANDESTDIR = /usr/local/man/man1
 SRCDIR = ./src
 
 cygwinsmit:
-	$(CC) -Wall -std=c99 -o smit  -Iinclude \
+	$(CC)  -std=c99 -o smit  -Iinclude \
 	$(SRCDIR)/smit.c  \
 	$(SRCDIR)/shared/shared.c \
 	$(SRCDIR)/menu/menu.c  \
+	$(SRCDIR)/tui/fsmgr.c \
+	$(SRCDIR)/tui/usrmgr.c \
 	-l ncurses
 
 

@@ -30,6 +30,21 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef SHARED_H_
 #define SHARED_H_
 
+extern int x, y;
+extern int sx, sy;
+
+//WINDOW *SPAREWIN;
+
+
 void draw_screen_outline();
+void draw_mgrtui();
+void place_function_keys();
+
+int filesystem_manager_main();
+int user_manager_main();
+
+
+
+
 
 #endif
