@@ -54,17 +54,18 @@ User and Group Manager
 
 
 struct passwd *pw;
-int PADCREATED = 0;
+int PADCREATED;
 int maxuser;
 
 
 /* Process the Users information and Place them on the PAD */
 
-int process_users(void)
+void process_users(void)
 {
     int counter, line;
     counter = 1;
     line = 15;
+    setpwent();
     while((pw = getpwent() )) 
     {
 	(void)mvwprintw(SPAREPAD, line, 2,  "%s", pw->pw_name);
@@ -78,10 +79,13 @@ int process_users(void)
 
 	/* See shared.c for prefresh() */
 	refresh_pad();
+	
+	
     }
 
     endpwent();
-    return 0;
+    
+    
 }
 
 
@@ -90,6 +94,7 @@ int user_manager_main()
 {
 
     int key;
+    PADCREATED = 0;
     
     while(key !='q')
     {
@@ -115,26 +120,26 @@ int user_manager_main()
 
         
         
-        if(PADCREATED != 1)
+        if(PADCREATED < 1)
         {
     	    SPAREPAD = newpad(200, 100);
             getmaxyx(SPAREPAD, py, px);
     	    scrollok(SPAREPAD, TRUE);
-    	    PADCREATED = 1;
+    	    PADCREATED = 1 ;
+    	    process_users();
     	}
     	
-        
-        process_users();
+
         /* See Spare.c for refresh_Pad and prefresh() */
-	refresh_pad();
-        
-        
-        
+   	    refresh_pad();
+          
         key = getch();
+    
     }
 
 
-
-
+    wclear(SPAREPAD);
+    PADCREATED = 0;
+    
     return 0;
 }

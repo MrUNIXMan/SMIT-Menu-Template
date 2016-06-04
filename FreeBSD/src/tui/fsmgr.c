@@ -79,7 +79,6 @@ int process_fstab(void)
 
 	/* See shared.c for prefresh() */
 	refresh_pad();
-	
     }
     /* Keep this outside of the loop it causes infinate loop on 1st entry */
     endfsent();
@@ -112,7 +111,7 @@ int filesystem_manager_main()
         mvaddstr(5, 50, "State");
         
         mvaddstr(5, y-20, "Total Entries: ");
-        	/* Shows total users on system */
+        	/* Shows total filesystems on system */
 	mvprintw(5, y-5, "%d", maxfs);
 	refresh();
 
@@ -138,6 +137,6 @@ int filesystem_manager_main()
 
 
 
-
+    wclear(SPAREPAD);
     return 0;
 }
