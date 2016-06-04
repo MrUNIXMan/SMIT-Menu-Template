@@ -15,6 +15,7 @@ cygwinsmit:
 	$(SRCDIR)/menu/menu.c  \
 	$(SRCDIR)/tui/fsmgr.c \
 	$(SRCDIR)/tui/usrmgr.c \
+	$(SRCDIR)/tui/grmgr.c \
 	-l ncurses
 
 
