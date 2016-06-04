@@ -35,6 +35,7 @@ extern int sx, sy;
 extern int counter;
 extern int line;
 extern int PADCREATED;
+extern int PADCREATEFS;
 
 WINDOW *SPAREWIN;
 WINDOW *SPAREPAD;
@@ -46,6 +47,7 @@ void refresh_pad();
 
 int filesystem_manager_main();
 int user_manager_main();
+int group_manager_main();
 
 
 

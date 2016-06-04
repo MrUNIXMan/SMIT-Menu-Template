@@ -239,6 +239,11 @@ void draw_menu_screen(char menutype[])
 				     filesystem_manager_main();
 				}
 				
+				if (MMITEMS == 3)
+				{
+				     group_manager_main();
+				}
+				
 				if(MMITEMS == 5)
 				{
 					draw_menu_screen("syscfg");

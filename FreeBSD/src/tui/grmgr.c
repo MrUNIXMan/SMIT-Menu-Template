@@ -44,7 +44,7 @@ User and Group Manager
 
 #include <unistd.h>  // Unistd header
 #include <string.h>  // String header
-#include <pwd.h>    // Password Stuff
+#include <grp.h>    // Password Stuff
 
 /* Custom Headers for SMIT */
 
@@ -53,29 +53,29 @@ User and Group Manager
 #include "../shared/shared.h"   // Shared Functions
 
 
-struct passwd *pw;
-int PADCREATED;
-int maxuser;
+struct group *gr;
+int PADCREATEDGR;
+int maxgroup;
 
 
 /* Process the Users information and Place them on the PAD */
 
-void process_users(void)
+void process_groups(void)
 {
     int counter, line;
     counter = 1;
     line = 15;
-    setpwent();
-    while((pw = getpwent() )) 
+    setgrent();
+    while((gr = getgrent() )) 
     {
-	(void)mvwprintw(SPAREPAD, line, 2,  "%s", pw->pw_name);
-	(void)mvwprintw(SPAREPAD, line, 18,  "%d", pw->pw_uid);
-	(void)mvwprintw(SPAREPAD, line, 28,  "%d", pw->pw_gid);
-	(void)mvwprintw(SPAREPAD, line, 48,  "%s", pw->pw_gecos);
+	(void)mvwprintw(SPAREPAD, line, 2,  "%s", gr->gr_name);
+	(void)mvwprintw(SPAREPAD, line, 28,  "%d", gr->gr_gid);
+//	(void)mvwprintw(SPAREPAD, line, 28,  "%d", pw->pw_gid);
+//	(void)mvwprintw(SPAREPAD, line, 48,  "%s", pw->pw_gecos);
 	wmove(SPAREPAD, line++, 2);
 	counter++;
-	maxuser =  counter;
-	mvprintw(5, y-5, "%d", maxuser);
+	maxgroup =  counter;
+	mvprintw(5, y-5, "%d", maxgroup);
 
 	/* See shared.c for prefresh() */
 	refresh_pad();
@@ -83,18 +83,18 @@ void process_users(void)
 	
     }
 
-    endpwent();
+    endgrent();
     
     
 }
 
 
 
-int user_manager_main()
+int group_manager_main()
 {
 
     int key;
-    PADCREATED = 0;
+    PADCREATEDGR = 0;
     
     while(key !='q')
     {
@@ -105,28 +105,28 @@ int user_manager_main()
 	int py, px; /* Pads X and Y */
 	
         attron(A_BOLD);
-        mvaddstr(1, y-20, "User Manager");
+        mvaddstr(1, y-20, "Group Manager");
         
-        mvaddstr(5, 4, "User");
-        mvaddstr(5, 20, "User ID");
+        mvaddstr(5, 4, "Group Name");
+//        mvaddstr(5, 20, "Group  ID");
         mvaddstr(5, 30, "Group ID");
 
-        mvaddstr(5, 50, "Comment");
+//        mvaddstr(5, 50, "Comment");
         
-        mvaddstr(5, y-20, "Total Users: ");
+        mvaddstr(5, y-20, "Total Groups: ");
         	/* Shows total users on system */
-	mvprintw(5, y-5, "%d", maxuser);
+	mvprintw(5, y-5, "%d", maxgroup);
 	refresh();
 
         
         
-        if(PADCREATED < 1)
+        if(PADCREATEDGR < 1)
         {
     	    SPAREPAD = newpad(200, 100);
             getmaxyx(SPAREPAD, py, px);
     	    scrollok(SPAREPAD, TRUE);
-    	    PADCREATED = 1 ;
-    	    process_users();
+    	    PADCREATEDGR = 1 ;
+    	    process_groups();
     	}
     	
 
@@ -139,7 +139,7 @@ int user_manager_main()
 
 
     wclear(SPAREPAD);
-   // PADCREATED = 0;
+
     
     return 0;
 }
