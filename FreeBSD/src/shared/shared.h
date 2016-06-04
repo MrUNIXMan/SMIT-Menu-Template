@@ -32,13 +32,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 extern int x, y;
 extern int sx, sy;
+extern int counter;
+extern int line;
+extern int PADCREATED;
 
-//WINDOW *SPAREWIN;
-
+WINDOW *SPAREWIN;
+WINDOW *SPAREPAD;
 
 void draw_screen_outline();
 void draw_mgrtui();
 void place_function_keys();
+void refresh_pad();
 
 int filesystem_manager_main();
 int user_manager_main();

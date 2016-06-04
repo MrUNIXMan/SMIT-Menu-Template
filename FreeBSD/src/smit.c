@@ -128,6 +128,12 @@ void chk_args(char *args)
 		usage();
 		exit(0);
 	}
+	else if(strcmp(args, "usermgr") == 0)
+	{
+		init_curses();
+		user_manager_main();
+		clean_exits();
+	}
 	
 }
 

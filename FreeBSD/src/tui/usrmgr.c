@@ -44,12 +44,46 @@ User and Group Manager
 
 #include <unistd.h>  // Unistd header
 #include <string.h>  // String header
+#include <pwd.h>    // Password Stuff
 
 /* Custom Headers for SMIT */
 
 #include "../include/smit.h"   // SMIT.h header
 #include "../include/menu.h"	// Menu Specific header
 #include "../shared/shared.h"   // Shared Functions
+
+
+struct passwd *pw;
+int PADCREATED = 0;
+int maxuser;
+
+
+/* Process the Users information and Place them on the PAD */
+
+int process_users(void)
+{
+    int counter, line;
+    counter = 1;
+    line = 15;
+    while((pw = getpwent() )) 
+    {
+	(void)mvwprintw(SPAREPAD, line, 2,  "%s", pw->pw_name);
+	(void)mvwprintw(SPAREPAD, line, 18,  "%d", pw->pw_uid);
+	(void)mvwprintw(SPAREPAD, line, 28,  "%d", pw->pw_gid);
+	(void)mvwprintw(SPAREPAD, line, 48,  "%s", pw->pw_gecos);
+	wmove(SPAREPAD, line++, 2);
+	counter++;
+	maxuser =  counter;
+	mvprintw(5, y-5, "%d", maxuser);
+
+	/* See shared.c for prefresh() */
+	refresh_pad();
+    }
+
+    endpwent();
+    return 0;
+}
+
 
 
 int user_manager_main()
@@ -62,16 +96,37 @@ int user_manager_main()
 
 	/* See shared.c for the TUI drawing  as it is re-usable code */
         draw_mgrtui();
-//	int sy;        
-
+	
+	int py, px; /* Pads X and Y */
+	
         attron(A_BOLD);
         mvaddstr(1, y-20, "User Manager");
         
-        mvaddstr(5, 3, "User");
+        mvaddstr(5, 4, "User");
         mvaddstr(5, 20, "User ID");
         mvaddstr(5, 30, "Group ID");
 
         mvaddstr(5, 50, "Comment");
+        
+        mvaddstr(5, y-20, "Total Users: ");
+        	/* Shows total users on system */
+	mvprintw(5, y-5, "%d", maxuser);
+	refresh();
+
+        
+        
+        if(PADCREATED != 1)
+        {
+    	    SPAREPAD = newpad(200, 100);
+            getmaxyx(SPAREPAD, py, px);
+    	    scrollok(SPAREPAD, TRUE);
+    	    PADCREATED = 1;
+    	}
+    	
+        
+        process_users();
+        /* See Spare.c for refresh_Pad and prefresh() */
+	refresh_pad();
         
         
         

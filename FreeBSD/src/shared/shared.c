@@ -44,7 +44,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* This draws a box on stdscr */
 int x, y;
 
-WINDOW *SPAREWIN;
+//WINDOW *SPAREWIN;
 
 void draw_screen_outline()
 {
@@ -85,6 +85,24 @@ void place_function_keys()
     mvaddstr(y-4, 2, FKEY1);
     mvaddstr(y-3, 2, FKEY2);
     attroff(A_BOLD);
+
+
+}
+
+/* Used by Both Forms */
+
+void refresh_pad()
+{
+
+	/* prefresh arguments 
+	  
+	          prefresh(PAD NAME, pminrow, pmincol, sminrow, smincol, smaxrow, smaxcol); 
+	          prefresh(SPAREPAD,15, 1, 7, 3,14, 15); */
+	          
+	          int sy, sx;
+	          getmaxyx(SPAREWIN, sy,sx);
+	          
+	           prefresh(SPAREPAD,15, 1, 7, 3,sy+4, sx-2);
 
 
 }

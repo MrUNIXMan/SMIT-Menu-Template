@@ -28,9 +28,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---------------------------------------------------------------------------------------
 
-Description: Fsmgr
-
-Filesystem Manager
+Description: Usrmgr
+User and Group Manager
 
 ----------------------------------------------------------------------------------------
 */
@@ -45,12 +44,49 @@ Filesystem Manager
 
 #include <unistd.h>  // Unistd header
 #include <string.h>  // String header
+#include <fstab.h>    // fstab
 
 /* Custom Headers for SMIT */
 
 #include "../include/smit.h"   // SMIT.h header
 #include "../include/menu.h"	// Menu Specific header
 #include "../shared/shared.h"   // Shared Functions
+
+
+struct fstab *fs;
+int PADCREATEDFS = 0;
+int maxfs;
+
+
+/* Process the fstab information and Place them on the PAD */
+
+int process_fstab(void)
+{
+    int counter, line;
+    counter = 1;
+    line = 15;
+    setfsent();
+    while((fs = getfsent() )) 
+    {
+	(void)mvwprintw(SPAREPAD, line, 2,  "%s", fs->fs_spec);
+	(void)mvwprintw(SPAREPAD, line, 18,  "%s", fs->fs_vfstype);
+	(void)mvwprintw(SPAREPAD, line, 28,  "%s", fs->fs_file);
+	(void)mvwprintw(SPAREPAD, line, 48,  "%s", "FSTAB");
+	wmove(SPAREPAD, line++, 2);
+	counter++;
+	maxfs =  counter;
+	mvprintw(5, y-5, "%d", maxfs);
+
+	/* See shared.c for prefresh() */
+	refresh_pad();
+	
+    }
+    /* Keep this outside of the loop it causes infinate loop on 1st entry */
+    endfsent();
+
+    return 0;
+}
+
 
 
 int filesystem_manager_main()
@@ -63,16 +99,37 @@ int filesystem_manager_main()
 
 	/* See shared.c for the TUI drawing  as it is re-usable code */
         draw_mgrtui();
-//	int sy;        
-
+	
+	int py, px; /* Pads X and Y */
+	
         attron(A_BOLD);
-        mvaddstr(1, y-20, "Filesystem Manager");
+        mvaddstr(1, y-21, "Filesystems Manager");
         
-        mvaddstr(5, 3, "Filesystem Node");
-        mvaddstr(5, 18+6, "Filesystem Type");
-        mvaddstr(5, 38+6, "Mount Dir");
+        mvaddstr(5, 4, "Filesystem");
+        mvaddstr(5, 20, "Type");
+        mvaddstr(5, 30, "Mount Point");
 
-        mvaddstr(5, 70, "State");
+        mvaddstr(5, 50, "State");
+        
+        mvaddstr(5, y-20, "Total Entries: ");
+        	/* Shows total users on system */
+	mvprintw(5, y-5, "%d", maxfs);
+	refresh();
+
+        
+        
+        if(PADCREATEDFS != 1)
+        {
+    	    SPAREPAD = newpad(200, 100);
+            getmaxyx(SPAREPAD, py, px);
+    	    scrollok(SPAREPAD, TRUE);
+    	    PADCREATEDFS = 1;
+    	}
+    	
+        
+        process_fstab();
+        /* See Spare.c for refresh_Pad and prefresh() */
+	refresh_pad();
         
         
         
